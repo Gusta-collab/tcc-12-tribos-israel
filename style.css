@@ -657,7 +657,7 @@ body {
 }
 
 /* ==========================================
-   RESPONSIVIDADE MOBILE & TABLET
+   MOBILE & TABLET (ALINHAMENTO EXATO EM 100SVH)
    ========================================== */
 @media (max-width: 1024px), (orientation: portrait) {
   .menu-btn {
@@ -666,35 +666,49 @@ body {
 
   .nav nav {
     position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: min(75vw, 280px);
-    background: rgba(28, 8, 12, 0.96);
-    backdrop-filter: blur(16px);
+    inset: 0; /* Cobre a tela toda */
+    width: 100%;
+    background: rgba(42, 12, 16, 0.45); /* Mais transparente */
+    backdrop-filter: blur(16px); /* Efeito de vidro fosco */
+    -webkit-backdrop-filter: blur(16px);
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
-    padding: 8vh 8vw;
-    gap: 2.2vh;
-    transform: translateX(100%);
-    transition: transform 0.35s cubic-bezier(0.3, 0.9, 0.3, 1);
-    border-left: 1px solid rgba(243, 235, 221, 0.15);
+    align-items: center; /* Centraliza os links */
+    padding: 2vh 5vw;
+    gap: 4vh;
+    transform: translateY(-100%); /* Anima de cima para baixo */
+    transition: transform 0.4s cubic-bezier(0.3, 0.9, 0.3, 1), opacity 0.4s ease;
+    opacity: 0;
+    pointer-events: none;
+    border: none;
   }
 
   .nav.open nav {
-    transform: translateX(0);
+    transform: translateY(0);
+    opacity: 1;
+    pointer-events: all;
   }
 
   .nav a {
-    font-size: 14px;
+    font-size: 18px; /* Links maiores no celular */
+    letter-spacing: 0.25em;
+  }
+
+  /* Garante que a imagem da capa (hero) apareça no celular */
+  #hero .w.bgf {
+    opacity: 1 !important;
+    z-index: 0 !important;
+  }
+  
+  #hero .hero-overlay {
+    background: radial-gradient(circle at 50% 50%, rgba(63, 18, 24, 0.35), rgba(38, 8, 12, 0.85));
   }
 
   .cs {
     padding: calc(6.5vh + env(safe-area-inset-top, 0px)) 4.5vw calc(3.5vh + env(safe-area-inset-bottom, 0px));
     gap: 1.4vh;
     justify-content: center;
-    overflow: hidden;
+    overflow: hidden; /* Sem scroll interno para não travar o snap da página */
   }
 
   /* As 12 Pedras em 3x4 perfeitamente encaixadas no celular */
