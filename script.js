@@ -226,6 +226,7 @@ window.addEventListener('keydown', (e) => {
 
   rows.forEach((row, i) => {
     row.addEventListener('mouseenter', () => show(i));
+    row.addEventListener('click', () => show(i));
     row.addEventListener('focus', () => {
       if (!tx) { tx = window.innerWidth * 0.7; ty = window.innerHeight / 2; }
       show(i);
@@ -233,7 +234,13 @@ window.addEventListener('keydown', (e) => {
     row.addEventListener('blur', () => show(-1));
   });
 
-  root.addEventListener('mouseleave', () => show(-1));
+  const touchOnly = window.matchMedia('(hover: none)');
+  const leave = () => { if (!touchOnly.matches) show(-1); };
+  root.querySelector('.jr-list').addEventListener('mouseleave', leave);
+  root.addEventListener('mouseleave', leave);
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.jr-row')) show(-1);
+  });
 
   new IntersectionObserver(([entry]) => {
     if (!entry.isIntersecting) show(-1);
