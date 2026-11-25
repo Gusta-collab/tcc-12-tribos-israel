@@ -4,12 +4,15 @@ Portfólio digital do projeto **Hoshen**, uma proposta de direção de arte e st
 
 ## Conteúdo
 
-- Apresentação e conceito criativo do projeto.
-- Identidade visual, paleta cromática e referências de cenário.
-- Direção de beleza e styling feminino e masculino.
-- Linguagem fotográfica e proposta de fashion film.
-- Galeria das doze pedras e seleção de joias.
-- Ensaios editoriais e seção de contato.
+Sete capítulos em tela cheia:
+
+1. Capa e apresentação.
+2. Conceito criativo: a simbologia das doze pedras.
+3. Identidade visual, moodboard e paleta cromática.
+4. Linguagem fotográfica e proposta de fashion film.
+5. As doze pedras, com suas tribos.
+6. As joias, em lista interativa.
+7. Contato.
 
 ## Tecnologias
 
@@ -40,6 +43,8 @@ Abra `index.html` diretamente no navegador ou sirva a pasta com um servidor HTTP
 - Menu compacto em telas menores.
 - Indicador de progresso e contador de seção.
 - Animações de entrada e efeito parallax em telas desktop.
+- Lista de joias: ao passar o mouse sobre um nome, a imagem da peça acompanha o cursor (no celular, cada nome mostra uma miniatura fixa).
+- Os capítulos animam de novo a cada vez que são revisitados.
 - Clique nas imagens para ampliá-las; pressione **Esc** ou clique fora da imagem para fechar.
 - Navegação entre seções pelas setas, **Espaço** e **Page Up/Page Down**.
 

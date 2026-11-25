@@ -1,12 +1,10 @@
 const CHAPTERS = [
   ["Início", "hero"],
   ["Conceito", "conceito"],
-  ["Cenário", "cenario"],
-  ["Beleza", "beleza"],
-  ["Styling", "styling-fem"],
+  ["Identidade", "identidade"],
+  ["Linguagem", "linguagem"],
   ["Pedras", "stones"],
   ["Joias", "joias"],
-  ["Editorial", "editorial-1"],
   ["Contato", "contato"]
 ];
 
@@ -106,6 +104,15 @@ const observer = new IntersectionObserver((entries) => {
 
 sections.forEach(sec => observer.observe(sec));
 
+// Ao sair totalmente da tela, o slide reinicia para animar de novo na volta
+const resetObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (!entry.isIntersecting) entry.target.classList.remove('in');
+  });
+}, { threshold: 0 });
+
+sections.forEach(sec => resetObserver.observe(sec));
+
 // Barra de progresso e efeito parallax suave apenas no desktop
 let ticking = false;
 const isDesktopQuery = window.matchMedia('(min-width: 1025px) and (orientation: landscape)');
@@ -175,5 +182,62 @@ window.addEventListener('keydown', (e) => {
     sections[prev].scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 });
+
+// Joias: lista com imagem que acompanha o cursor
+(() => {
+  const root = document.getElementById('jr');
+  if (!root) return;
+
+  const rows = [...root.querySelectorAll('.jr-row')];
+  const layers = [...root.querySelectorAll('.jr-img')];
+  const float = root.querySelector('.jr-float');
+  const calm = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  let tx = 0, ty = 0, x = 0, y = 0, active = -1, raf = 0;
+
+  const loop = () => {
+    const k = calm ? 1 : 0.14;
+    x += (tx - x) * k;
+    y += (ty - y) * k;
+    float.style.transform = `translate3d(${x}px, ${y}px, 0) translate(-50%, -50%)`;
+    const settled = Math.abs(tx - x) + Math.abs(ty - y) < 0.5;
+    raf = active !== -1 || !settled ? requestAnimationFrame(loop) : 0;
+  };
+
+  const show = (i) => {
+    if (active === -1 && i !== -1) { x = tx; y = ty; }
+    active = i;
+    root.classList.toggle('has-active', i !== -1);
+    rows.forEach((row, n) => row.classList.toggle('on', n === i));
+    layers.forEach((layer, n) => {
+      const pos = i === -1 || n > i ? 100 : n < i ? -100 : 0;
+      layer.style.transform = `translateY(${pos}%)`;
+    });
+    if (i !== -1 && !raf) raf = requestAnimationFrame(loop);
+  };
+
+  root.addEventListener('mousemove', (e) => {
+    const halfW = float.offsetWidth / 2;
+    const halfH = float.offsetHeight / 2 + 12;
+    const textRight = Math.max(...rows.map(r => r.lastElementChild.getBoundingClientRect().right));
+    const minX = textRight + halfW + 32;
+    tx = Math.min(window.innerWidth - halfW - 16, Math.max(e.clientX + 220, minX));
+    ty = Math.max(halfH, Math.min(window.innerHeight - halfH, e.clientY));
+  });
+
+  rows.forEach((row, i) => {
+    row.addEventListener('mouseenter', () => show(i));
+    row.addEventListener('focus', () => {
+      if (!tx) { tx = window.innerWidth * 0.7; ty = window.innerHeight / 2; }
+      show(i);
+    });
+    row.addEventListener('blur', () => show(-1));
+  });
+
+  root.addEventListener('mouseleave', () => show(-1));
+
+  new IntersectionObserver(([entry]) => {
+    if (!entry.isIntersecting) show(-1);
+  }).observe(root);
+})();
 
 updateActiveState(0);

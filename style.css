@@ -392,57 +392,16 @@ body {
   color: var(--cream);
 }
 
-.glass-card {
-  background: var(--glass-bg);
-  backdrop-filter: blur(14px);
-  -webkit-backdrop-filter: blur(14px);
-  border: 1px solid var(--glass-border);
-  border-radius: 10px;
-  padding: clamp(16px, 2.4vw, 36px);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.32);
-}
 
-.feature-list {
-  list-style: none;
-  display: flex;
-  flex-direction: column;
-  gap: 1.2vh;
-  margin-top: 1vh;
-}
 
-.feature-list li {
-  position: relative;
-  padding-left: 1.5em;
-}
 
-.feature-list li::before {
-  content: "◆";
-  position: absolute;
-  left: 0;
-  top: 0.1em;
-  color: var(--sand);
-  font-size: 0.8em;
-}
 
-.feature-list.compact li {
-  text-transform: uppercase;
-  letter-spacing: 0.14em;
-  font-size: clamp(11px, 1.05cqw, 15px);
-}
 
 .canvas-panel {
   position: absolute;
   z-index: 10;
 }
 
-.location-sub {
-  font-family: 'Antonio', sans-serif;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: var(--sand);
-  margin: 0.5vh 0 1vh;
-  font-size: clamp(11px, 1.05cqw, 15px);
-}
 
 .palette-swatches {
   position: absolute;
@@ -561,31 +520,9 @@ body {
   opacity: 0.68;
 }
 
-.jg {
-  grid-template-columns: repeat(4, 1fr);
-  gap: 1.6vh 1.6vw;
-  width: min(100%, 1120px);
-}
 
-.jg .cd .w {
-  max-width: 23svh;
-  background: radial-gradient(circle at 50% 40%, #7a303a, #2c0b10);
-  border: 1px solid rgba(243, 235, 221, 0.15);
-}
 
-.jg .cd .w .im {
-  left: 10%;
-  top: 10%;
-  width: 80%;
-  height: 80%;
-}
 
-.jt {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  gap: 0.8vh;
-}
 
 /* ==========================================
    CONTATO & LIGHTBOX
@@ -832,20 +769,8 @@ body {
     gap: 1vh;
   }
 
-  .jg {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1vh 3vw;
-  }
 
-  .jg .jt {
-    grid-column: 1 / -1;
-    order: -1;
-    text-align: center;
-  }
 
-  .jg .cd .w {
-    max-width: 12.5svh;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -860,5 +785,296 @@ body {
     transform: none;
     clip-path: none;
     scale: 1;
+  }
+}
+
+/* ==========================================
+   ANIMAÇÕES E ACABAMENTO
+   ========================================== */
+:focus-visible {
+  outline: 2px solid var(--sand);
+  outline-offset: 3px;
+}
+
+/* Capa: título revelado linha a linha + deriva lenta da foto de fundo */
+.ln {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+}
+
+.ln > span {
+  display: block;
+  transform: translateY(108%);
+  transition: transform 1.2s cubic-bezier(0.2, 0.7, 0.2, 1) var(--d, 0.1s);
+}
+
+.in .ln > span {
+  transform: none;
+}
+
+#hero .bgf .im {
+  animation: drift 26s ease-in-out infinite alternate;
+}
+
+@keyframes drift {
+  from { transform: scale(1); }
+  to { transform: scale(1.07) translate(-1%, 1%); }
+}
+
+/* Identidade: paleta se desenha em sequência */
+.palette-swatches span {
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1) calc(0.9s + var(--i, 0) * 0.09s);
+}
+
+.in .palette-swatches span {
+  transform: none;
+}
+
+/* Linguagem: pilares entram um a um */
+.pillar-item {
+  opacity: 0;
+  transform: translateX(-14px);
+  transition: opacity 0.7s ease calc(0.55s + var(--i, 0) * 0.12s), transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) calc(0.55s + var(--i, 0) * 0.12s);
+}
+
+.in .pillar-item {
+  opacity: 1;
+  transform: none;
+}
+
+/* Pedras: cartão sobe ao passar o mouse */
+.cd .w {
+  transition: clip-path 1s cubic-bezier(0.7, 0, 0.2, 1) var(--d, 0s), transform 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.5s ease;
+}
+
+.in .cd:hover .w {
+  transform: translateY(-8px);
+  box-shadow: 0 18px 36px rgba(0, 0, 0, 0.45);
+}
+
+.cd .nm {
+  transition: color 0.3s ease;
+}
+
+.cd:hover .nm {
+  color: var(--sand);
+}
+
+/* Joias: lista com imagem que acompanha o cursor */
+.cs.jr {
+  justify-content: center;
+  gap: 3vh;
+}
+
+.jr-head {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6vh;
+}
+
+.jr-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(4px, 1.3vh, 16px);
+  width: min(100%, 760px);
+}
+
+.jr-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1.4em;
+  outline: none;
+}
+
+.jr-clip {
+  display: block;
+  overflow: hidden;
+  font: 400 clamp(20px, min(3.4vw, 6vh), 54px)/1.2 'Bodoni Moda', Georgia, serif;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+  color: var(--cream);
+  transition: color 0.25s ease;
+}
+
+.jr-roll {
+  display: block;
+  position: relative;
+  white-space: pre;
+  transition: transform 0.55s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.jr-roll::after {
+  content: attr(data-t);
+  position: absolute;
+  left: 0;
+  top: 100%;
+  color: var(--sand);
+}
+
+.jr-row.on .jr-roll,
+.jr-row:focus-visible .jr-roll {
+  transform: translateY(-100%);
+}
+
+.jr-type {
+  font: 400 clamp(9px, 0.78vw, 12px) 'Arimo', sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  opacity: 0.68;
+  transition: opacity 0.25s ease;
+}
+
+.jr.has-active .jr-row:not(.on) .jr-clip {
+  color: rgba(243, 235, 221, 0.36);
+}
+
+.jr.has-active .jr-row:not(.on) .jr-type {
+  opacity: 0.22;
+}
+
+.jr-thumb {
+  display: none;
+}
+
+.jr-float {
+  position: fixed;
+  left: 0;
+  top: 0;
+  z-index: 30;
+  width: clamp(190px, 17vw, 290px);
+  aspect-ratio: 3 / 4;
+  border-radius: 14px;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  background: radial-gradient(circle at 50% 40%, #7a303a, #2c0b10);
+  border: 1px solid rgba(243, 235, 221, 0.18);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  will-change: transform;
+}
+
+.jr.has-active .jr-float {
+  opacity: 1;
+}
+
+.jr-img {
+  position: absolute;
+  inset: 0;
+  padding: 8%;
+  background-origin: content-box;
+  background-clip: content-box;
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  transform: translateY(100%);
+  transition: transform 0.7s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+/* Contato */
+.foot {
+  position: absolute;
+  z-index: 4;
+  right: 3.5vw;
+  bottom: calc(1.6vh + env(safe-area-inset-bottom, 0px));
+  font: 400 11px 'Antonio', sans-serif;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+  color: var(--sand);
+  opacity: 0.8;
+}
+
+/* Celular e telas sem mouse: miniatura fixa ao lado de cada nome */
+@media (hover: none), (max-width: 1024px), (orientation: portrait) {
+  .jr-float {
+    display: none;
+  }
+
+  .cs.jr {
+    gap: 1.6vh;
+  }
+
+  .jr-head {
+    align-items: center;
+    text-align: center;
+  }
+
+  .jr-list {
+    gap: 1vh;
+  }
+
+  .jr-row {
+    align-items: center;
+    gap: 3vw;
+  }
+
+  .jr-thumb {
+    display: block;
+    flex: none;
+    width: 8.4svh;
+    height: 8.4svh;
+    padding: 0.8svh;
+    border-radius: 6px;
+    background-color: #2c0b10;
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-origin: content-box;
+    border: 1px solid rgba(243, 235, 221, 0.15);
+  }
+
+  .jr-clip {
+    font-size: clamp(17px, 5vw, 26px);
+  }
+
+  .jr-type {
+    margin-left: auto;
+    font-size: clamp(8px, 2.3vw, 10px);
+    text-align: right;
+  }
+
+  .hint {
+    bottom: calc(5.4vh + env(safe-area-inset-bottom, 0px));
+    letter-spacing: 0.18em;
+    font-size: 10px;
+  }
+
+  .foot {
+    left: 0;
+    right: 0;
+    text-align: center;
+    font-size: 9px;
+  }
+}
+
+/* Linguagem: véu sobre a foto para o título ficar legível */
+#linguagem .w.bgf::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, rgba(35, 10, 12, 0.62), rgba(35, 10, 12, 0.12));
+}
+
+/* Joias: dica de uso (só com mouse) */
+.jr-hint {
+  font: 400 clamp(9px, 0.78vw, 12px) 'Arimo', sans-serif;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--sand);
+  opacity: 0.7;
+  transition: opacity 0.3s ease;
+}
+
+.jr.has-active .jr-hint {
+  opacity: 0;
+}
+
+@media (hover: none), (max-width: 1024px), (orientation: portrait) {
+  .jr-hint {
+    display: none;
   }
 }
